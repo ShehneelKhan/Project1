@@ -1,0 +1,34 @@
+.bar {
+  background-color: black;
+}
+
+a{
+  color: #6666de;
+}
+
+#BookCheckerz {
+
+  font-weight: bold;
+
+}
+
+#logout {
+  margin-left: 800px;
+}
+
+.display-4{
+  font-family: Verdana;
+  padding-left: 9em;
+}
+
+form {
+
+  padding-left: 12em;
+  margin-left: 20em;
+  padding-right: 5em;
+  margin-right: 31em;
+}
+
+body {
+  background-color: #d9deda;
+}
