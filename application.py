@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template
+from flask import Flask, session, render_template, request
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -21,14 +21,30 @@ engine = create_engine("postgres://srcsvtqzajbsqa:2816e69dcd518b6d8c414d3104dc15
 db = scoped_session(sessionmaker(bind=engine))
 
 
-@app.route("/")
+@app.route("/",methods=["GET","POST"])
 def index():
     return render_template("index.html")
 
-@app.route("/register")
+@app.route("/register",methods=["GET","POST"])
 def register():
-    return render_template("register.html")
+    if request.method=="POST":
+        email_id=request.form.get("email_id")
+        pass1=request.form.get("pass1")
+        pass2=request.form.get("pass2")
+        if email_id == "" or pass1 == "" or pass2 == "":
+            return render_template("error.html", message="You cant leave a field empty!")
 
-@app.route("/login")
+        elif pass1!=pass2:
+            return render_template("error.html", message="Your password does not match!")
+
+        else:
+            return render_template("login.html")
+
+        # DATABASE CREATE KARNI HAI AUR INSERT KARANA HAI  DATA
+    else:
+        return render_template("register.html")
+
+
+@app.route("/login",methods=["GET","POST"])
 def login():
     return render_template("login.html")

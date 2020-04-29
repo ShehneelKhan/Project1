@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Error
+{% endblock %}
+
+{% block css %}
+  <style>
+    h1 {
+      padding-left: 1em;
+    }
+
+
+    #msg {
+      padding-left: 2em;
+      padding-right: 60em;
+    }
+  </style>
+
+{% endblock %}
+
+{% block body %}
+
+  <br>
+  <h1>Registration Failed!</h1>
+  <br>
+
+<div id="msg">
+  <div class="alert alert-danger" role="alert">
+  {{ message }}
+</div>
+</div>
+
+{% endblock %}
