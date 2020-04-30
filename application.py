@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -19,7 +19,6 @@ Session(app)
 # Set up database
 engine = create_engine("postgres://srcsvtqzajbsqa:2816e69dcd518b6d8c414d3104dc153014046967147714f3d525fa2b2ed783ca@ec2-54-86-170-8.compute-1.amazonaws.com:5432/d1f5f7l7rlidba")
 db = scoped_session(sessionmaker(bind=engine))
-
 
 @app.route("/",methods=["GET","POST"])
 def index():
@@ -55,20 +54,45 @@ def register():
 @app.route("/login",methods=["GET","POST"])
 def login():
     if request.method == "POST":
+        session.pop("user_id",None)
         email_id = request.form.get("email_id")
         pass1 = request.form.get("pass1")
-        checking = db.execute("SELECT email FROM users WHERE email = :email",{"email":email_id}).fetchone()
+        checking = db.execute("SELECT * FROM users WHERE email = :email",{"email":email_id}).fetchone()
         database_pass = db.execute("SELECT * FROM users WHERE password = :password",{"password":pass1}).fetchone()
+
 
         if checking is None:
             return render_template("error.html", message = "This account does not exist!")
 
         try:
             if pass1 == database_pass[2]:
-                return render_template("index.html")
+                session["user_id"]=checking[0]
+                return redirect(url_for("search"),code=307)
 
         except Exception as e:
             return render_template("error.html", message = "Incorrect Password!")
 
 
     return render_template("login.html")
+
+
+
+@app.route("/search",methods=["GET","POST"])
+def search():
+    try:
+        if session["user_id"] is not None:
+            return render_template("search.html")
+
+    except Exception as e:
+            return render_template("error.html", message="Login First!")
+
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+
+
+     # request.method=="GET":
