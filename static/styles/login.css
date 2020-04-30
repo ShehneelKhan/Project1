@@ -32,3 +32,8 @@ form {
 body {
   background-color: #d9deda;
 }
+
+span {
+  font-size: 13px;
+  padding-left: 2em;
+}
