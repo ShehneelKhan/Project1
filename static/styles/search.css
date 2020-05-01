@@ -5,3 +5,41 @@
 #logout {
   margin-left: 800px;
 }
+
+.container {
+  color: white;
+  background-color: #1f2091;
+  margin-right: 7em;
+}
+
+#id {
+  display: inline-grid;
+  padding-left: 2em;
+}
+
+#email {
+  display: inline-grid;
+  padding-left: 19em;
+}
+
+#password {
+  display: inline-grid;
+  padding-left: 13.5em;
+}
+
+#grid1 {
+
+  background-color: #24d9e3;
+  margin-left: 7.1em;
+  margin-right: 7em;
+}
+
+h3 {
+  text-align: center;
+  padding-right: 8em;
+  font-weight: bold;
+}
+
+#flex {
+  background-color: gray;
+}

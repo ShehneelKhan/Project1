@@ -17,8 +17,17 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Set up database
-engine = create_engine("postgres://srcsvtqzajbsqa:2816e69dcd518b6d8c414d3104dc153014046967147714f3d525fa2b2ed783ca@ec2-54-86-170-8.compute-1.amazonaws.com:5432/d1f5f7l7rlidba")
+engine = create_engine("postgres://njpclqortbfebd:8f23a1bc0c6579e17b1cbd74a32565efcff328eeeccd80c4ae76604bb805e7be@ec2-34-200-72-77.compute-1.amazonaws.com:5432/dbugc5i5mcp5rs")
 db = scoped_session(sessionmaker(bind=engine))
+
+
+conn = None
+
+# def get_db():
+#     global conn
+#     if conn is None:
+#         conn = connect_db()
+#     return conn
 
 @app.route("/",methods=["GET","POST"])
 def index():
@@ -66,7 +75,11 @@ def login():
 
         try:
             if pass1 == database_pass[2]:
+
                 session["user_id"]=checking[0]
+                session["user_name"]=checking[1]
+                session["password"]=checking[2]
+
                 return redirect(url_for("search"),code=307)
 
         except Exception as e:
@@ -81,10 +94,10 @@ def login():
 def search():
     try:
         if session["user_id"] is not None:
-            return render_template("search.html")
+            return render_template("search.html",user_id = session["user_id"],user_name = session["user_name"],password = session["password"])
 
     except Exception as e:
-            return render_template("error.html", message="Login First!")
+            return render_template("error.html", message = "Login First!")
 
 
 

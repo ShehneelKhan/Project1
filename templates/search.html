@@ -39,8 +39,42 @@
     </ul>
   </div>
   </div>
-  <br>
-  <br><br>
-  {{ message }}
+  <br><h3>Account details:</h3><br>
 
+
+
+  <div class="container">
+  <div class="row align-items-start">
+    <div class="col">
+      User ID:
+    </div>
+    <div class="col">
+      Email ID:
+    </div>
+    <div class="col">
+      Password:
+    </div>
+  </div>
+  <br></div>
+  <div id="grid1">
+
+
+  <div id="id">{{  session["user_id"] }}</div><div id="email"> {{ session["user_name"] }}</div>
+
+  <div id="password">{{ session["password"] }}</div></div>
+
+  <br>
+  <div id="flex"><div class="d-flex p-2"></div></div>
+
+  <!-- Search form -->
+<form class="form-inline d-flex justify-content-center md-form form-sm active-cyan-2 mt-2">
+  <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search"
+    aria-label="Search">
+  <i class="fas fa-search" aria-hidden="true"></i>
+</form>
+
+<form class="form-inline md-form mr-auto mb-4">
+  <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+  <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="submit">Search</button>
+</form>
 {% endblock %}
