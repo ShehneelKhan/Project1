@@ -24,7 +24,7 @@
 
 #password {
   display: inline-grid;
-  padding-left: 13.5em;
+  padding-left: 18em;
 }
 
 #grid1 {
@@ -42,4 +42,12 @@ h3 {
 
 #flex {
   background-color: gray;
+}
+
+#search {
+    padding-left: 32em;
+}
+
+#hh {
+  padding-right: 40em;
 }

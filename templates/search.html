@@ -65,16 +65,43 @@
 
   <br>
   <div id="flex"><div class="d-flex p-2"></div></div>
-
+  <br>
+  <div id="hh">
+  <h3>Search a book by title/author/isbn:</h3></div>
   <!-- Search form -->
-<form class="form-inline d-flex justify-content-center md-form form-sm active-cyan-2 mt-2">
-  <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search"
-    aria-label="Search">
-  <i class="fas fa-search" aria-hidden="true"></i>
+<div id="search">
+<form action = "{{ url_for('search') }}" method="post" class="form-inline md-form mr-auto mb-4">
+  <input class="form-control mr-sm-2" name="search_book" type="text" placeholder="Search" aria-label="Search">
+  <button type="submit" class="btn btn-primary">Search</button>
 </form>
+</div>
 
-<form class="form-inline md-form mr-auto mb-4">
-  <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-  <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="submit">Search</button>
-</form>
+
+{% if table == True %}
+  <table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Year</th>
+      <th scope="col">ISBN</th>
+    </tr>
+  </thead>
+  <tbody>
+
+      {% for i in result %}
+    <tr>
+
+      <td>{{i.title}}</td>
+      <td>{{i.author}}</td>
+      <td>{{i.year}}</td>
+      <td>{{i.isbn}}</td>
+
+    </tr>
+      {% endfor %}
+
+  </tbody>
+  </table>
+{% endif %}
+
 {% endblock %}
