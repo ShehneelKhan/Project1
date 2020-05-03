@@ -1,5 +1,5 @@
 import os
-
+import re
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
@@ -20,14 +20,6 @@ Session(app)
 engine = create_engine("postgres://njpclqortbfebd:8f23a1bc0c6579e17b1cbd74a32565efcff328eeeccd80c4ae76604bb805e7be@ec2-34-200-72-77.compute-1.amazonaws.com:5432/dbugc5i5mcp5rs")
 db = scoped_session(sessionmaker(bind=engine))
 
-#
-# conn = None
-
-# def get_db():
-#     global conn
-#     if conn is None:
-#         conn = connect_db()
-#     return conn
 
 @app.route("/",methods=["GET","POST"])
 def index():
@@ -92,31 +84,43 @@ def login():
 
 @app.route("/search",methods=["GET","POST"])
 def search():
+    table = False
     try:
+
 
         if session["user_id"] is not None:
             pass
-        else:
-            return render_template("error.html", message = "Login First!")
 
 
         if session.get("books") is None:
             session["books"] = []
 
         if request.method == "POST":
-            table=True
+
+            regex = re.compile('[@_#$%^&*!()<>?/\|}{~:]')
             search_book = request.form.get("search_book")
+
+
             if search_book == "":
                 return render_template("error.html", message = "No such book.")
 
+
+            if not regex.search(str(search_book)) == None:
+                return render_template("error.html", message = "No such book.")
+
+
+
             res = db.execute(" SELECT * FROM books WHERE title LIKE '%"+str(search_book)+"%' OR author LIKE '%"+str(search_book)+"%' OR year LIKE '%"+str(search_book)+"%' OR isbn LIKE '%"+str(search_book)+"%' ;").fetchall()
-            if db.execute(" SELECT * FROM books WHERE title LIKE '%"+str(search_book)+"%' OR author LIKE '%"+str(search_book)+"%' OR year LIKE '%"+str(search_book)+"%' OR isbn LIKE '%"+str(search_book)+"%' ;").rowcount ==0:
-                return render_template("error.html", message = "No s1uch book.")
+
 
             for i in res:
                 session["books"].append(i)
+                table = True
+
+
 
             return render_template("search.html",result=res,table=table)
+
 
         return render_template("search.html",user_id = session["user_id"],user_name = session["user_name"],password = session["password"])
 
@@ -124,14 +128,16 @@ def search():
         return render_template("error.html", message = "Login First!")
 
 
+@app.route("/search/book_details")
+def book_details():
+    try:
+        if session["user_id"] is not None:
+            pass
 
+    except Exception as e:
+        return render_template("error.html", message = "Login First!")
 
-
-
-
-
-
-
+    return render_template("book_details.html")
 
 
 

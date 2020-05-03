@@ -92,7 +92,7 @@
       {% for i in result %}
     <tr>
 
-      <td>{{i.title}}</td>
+      <td><a href="{{ url_for('book_details') }}">{{i.title}}</td>
       <td>{{i.author}}</td>
       <td>{{i.year}}</td>
       <td>{{i.isbn}}</td>
