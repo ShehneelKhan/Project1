@@ -1,0 +1,53 @@
+.bar {
+  background-color: black;
+}
+
+#logout {
+  margin-left: 800px;
+}
+
+#BookCheckerz {
+  font-weight: bold;
+}
+
+
+
+h3 {
+  padding-left: 1em;
+  font-weight: bold;
+}
+
+
+.ff {
+  font-family: Verdana;
+}
+
+span {
+  font-weight: bold;
+}
+
+#flex {
+  background-color: gray;
+}
+
+.bg {
+  background-color: #d4d0c5
+}
+
+#comm {
+  display:inline-block;
+  padding-left: 2em;
+  width: 35em;
+  height: 25em;
+}
+
+#rate {
+  display:inline-block;
+  width: 15em;
+  float: right;
+  margin-right: 33em;
+}
+
+#btn {
+  padding-left: 15em;
+}

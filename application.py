@@ -1,5 +1,6 @@
 import os
 import re
+import requests
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
@@ -128,18 +129,26 @@ def search():
         return render_template("error.html", message = "Login First!")
 
 
-@app.route("/search/book_details")
-def book_details():
+@app.route("/search/<string:isbn>",methods = ["GET","POST"])
+def book_details(isbn):
+
     try:
         if session["user_id"] is not None:
             pass
 
+
+        apiCall = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "PlM0Yn7UcJQxgM6X2k1rA", "isbns": isbn })
+        if apiCall.status_code != 200:
+            return render_template("error.html", message = "Data is not available for this book")
+
+        apidata = apiCall.json()
+        dbdata = db.execute(" SELECT * FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchall()
+
+
     except Exception as e:
         return render_template("error.html", message = "Login First!")
 
-    return render_template("book_details.html")
-
-
+    return render_template("book_details.html", apidata = apidata, dbdata = dbdata)
 
 @app.route("/logout")
 def logout():

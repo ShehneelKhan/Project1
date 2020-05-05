@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block css %}
-  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/login.css') }}">
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/book_details.css') }}">
 
 {% endblock %}
 
@@ -38,8 +38,76 @@
   </ul>
 </div>
 </div>
+<div class="bg">
 <br>
+
+
+  <div class="ff">
+  <h3>Book Details</h3>
+  <br>
+
+  <!-- data from database -->
+  {% if dbdata %}
+
+  <ul>
+    {% for i in dbdata %}
+      <li>Title: <span>{{ i.title }}</span></li>
+      <li>Author: <span>{{ i.author }}</span></li>
+      <li>Publication Year: <span>{{ i.year }}</span></li>
+      <li>ISBN number: <span> {{ i.isbn }}</span></li>
+    {% endfor %}
+  </ul>
+  </div>
+  {% endif %}
+
+
+
+
+  <!-- data from apicall  -->
+{%if apidata %}
+<div class="ff">
+<h3> Review Details</h3>
+<br>
+
+  <ul>
+
+    <li>Total Reviews: <span>{{apidata['books'][0]['work_reviews_count']}}</span></li>
+    <li>Total Rating: <span>{{apidata['books'][0]['work_ratings_count']}}</span></li>
+    <li>Average rating: <span>{{apidata['books'][0]['average_rating']}}</span></li>
+
+  </ul>
+</div></div>
+{%endif%}
+<div id="flex">
+<div class="d-flex p-2 bd-highlight"></div></div>
+<br>
+<div class="ff">
+<h3>Reviews</h3></div>
 <br><br>
+
+
+<div id="comm">
+<div class="form-group">
+    <label for="exampleFormControlTextarea1"><h5>Comment</h5></label>
+    <textarea class="form-control" placeholder="Write a comment..." id="exampleFormControlTextarea1" rows="3"></textarea>
+    <br><div id="btn"><button type="submit" class="btn btn-primary">Submit</button></div>
+  </div>
+</div>
+
+
+<div id="rate">
+  <div class="form-group">
+    <label for="exampleFormControlSelect1"><h5>Rate book</h5></label>
+    <select class="form-control" id="exampleFormControlSelect1">
+      <option>1 Star</option>
+      <option>2 Stars</option>
+      <option>3 Stars</option>
+      <option>4 Stars</option>
+      <option>5 Stars</option>
+    </select>
+
+  </div>
+</div>
 
 
 
