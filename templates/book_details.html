@@ -88,18 +88,18 @@
 
 {% if reviews %}
 {% for i in reviews %}
-<div id="bg">
+
 <a href="#" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1"> {{ i.username }}</h5><br><br>
-      <small class="text-muted">Rating: {{ i.rating }}</small>
+      <small class="text-muted">Posted on: {{ today }}</small>
     </div>
     <p class="mb-1">{{ i.review }}<br></p><br><br>
-  </a></div>
+    <small class="text-muted">Rating: {{ i.rating }}</small>
+  </a>
 
 {% endfor %}
 {% endif %}
-
 
 
 
@@ -127,8 +127,7 @@
       <option>5 Stars</option>
     </select>
 
-  </div>
-</div>
+  </div></div>
 
 
 

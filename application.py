@@ -1,5 +1,6 @@
 import os
 import re
+from datetime import date
 import requests
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
@@ -131,7 +132,9 @@ def search():
 
 @app.route("/search/<string:isbn>",methods = ["GET","POST"])
 def book_details(isbn):
-    count = 0
+
+    today = date.today()
+    today = today.strftime("%d-%m-%Y")
 
     try:
         if session["user_id"] is not None:
@@ -146,11 +149,9 @@ def book_details(isbn):
 
         apidata = apiCall.json()
         dbdata = db.execute(" SELECT * FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchall()
-        count+=1
-        if count > 1:
-            return render_template("error.html", message = "Only one review per book is allowed!")
+        review_check = db.execute("SELECT * FROM reviews WHERE isbn =:isbn AND username =:username",{"isbn":isbn,"username":session["user_name"]}).fetchone()
 
-        if request.method == "POST":
+        if request.method == "POST" and  review_check==None:
 
             comment = request.form.get("comment")
             rate = request.form.get("rate")
@@ -158,17 +159,25 @@ def book_details(isbn):
             session["comments"].append(comment)
             db.execute("INSERT INTO reviews (username,isbn,review,rating) VALUES (:username,:isbn,:review,:rating)",{"username":session["user_name"],"isbn":isbn,"review":comment,"rating":rate})
             db.commit()
-            
+
+        elif request.method == "POST" and review_check!=None:
+            return render_template("error.html", message = "Only one review per book is allowed!")
 
 
         reviews = db.execute("SELECT * FROM reviews WHERE isbn=:isbn",{"isbn":isbn}).fetchall()
 
 
-
     except Exception as e:
-        return render_template("error.html", message = e)
+        return render_template("error.html", message = "Login First!")
 
-    return render_template("book_details.html", apidata = apidata, dbdata = dbdata , reviews = reviews)
+    return render_template("book_details.html", apidata = apidata, dbdata = dbdata , reviews = reviews, today = today)
+
+
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("error.html", message = "Page Not Found!")
 
 @app.route("/logout")
 def logout():
