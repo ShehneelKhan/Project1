@@ -82,15 +82,36 @@
 <div class="d-flex p-2 bd-highlight"></div></div>
 <br>
 <div class="ff">
-<h3>Reviews</h3></div>
-<br><br>
+<h3>Reviews</h3></div><br><br>
+
+
+
+{% if reviews %}
+{% for i in reviews %}
+<div id="bg">
+<a href="#" class="list-group-item list-group-item-action">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1"> {{ i.username }}</h5><br><br>
+      <small class="text-muted">Rating: {{ i.rating }}</small>
+    </div>
+    <p class="mb-1">{{ i.review }}<br></p><br><br>
+  </a></div>
+
+{% endfor %}
+{% endif %}
+
+
+
+
+
 
 
 <div id="comm">
 <div class="form-group">
+    <form input = "{{ url_for('book_details',isbn = isbn) }}" method="post">
     <label for="exampleFormControlTextarea1"><h5>Comment</h5></label>
-    <textarea class="form-control" placeholder="Write a comment..." id="exampleFormControlTextarea1" rows="3"></textarea>
-    <br><div id="btn"><button type="submit" class="btn btn-primary">Submit</button></div>
+    <textarea class="form-control" name="comment" placeholder="Write a comment..." id="exampleFormControlTextarea1" rows="3"></textarea>
+    <br><div id="btn"><button  type="submit" class="btn btn-primary">Submit</button></div>
   </div>
 </div>
 
@@ -98,7 +119,7 @@
 <div id="rate">
   <div class="form-group">
     <label for="exampleFormControlSelect1"><h5>Rate book</h5></label>
-    <select class="form-control" id="exampleFormControlSelect1">
+    <select class="form-control" name="rate" id="exampleFormControlSelect1">
       <option>1 Star</option>
       <option>2 Stars</option>
       <option>3 Stars</option>
