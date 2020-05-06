@@ -2,6 +2,14 @@
   background-color: black;
 }
 
+
+ul p{
+    padding-left: 1em;
+    color: white;
+}
+
+
+
 a{
   color: #6666de;
 }

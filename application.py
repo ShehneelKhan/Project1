@@ -35,29 +35,41 @@ def page_not_found(e):
 
 @app.route("/register",methods=["GET","POST"])
 def register():
+
+
     if request.method =="POST":
         min_chars = 7
         email_id=request.form.get("email_id")
         pass1 = request.form.get("pass1")
         pass2 = request.form.get("pass2")
-        if email_id == "" or pass1 == "" or pass2 == "":
-            return render_template("error.html", message="You cant leave a field empty!")
+        
 
-        elif pass1 != pass2:
-            return render_template("error.html", message="Your password does not match!")
+        available_user=db.execute("SELECT * FROM users WHERE email=:email",{"email":email_id}).fetchone()
 
-        if len(pass1) < min_chars:
-            return render_template("error.html", message="Your password should be atleast {} characters long!".format(min_chars))
+        if available_user is None:
 
-        else:
-            db.execute("INSERT INTO users (email,password) VALUES (:email,:password)",{"email":email_id,"password":pass1})
-            db.commit()
-            return render_template("login.html")
+            if email_id == "" or pass1 == "" or pass2 == "":
+                return render_template("error.html", message="You cant leave a field empty!")
+
+            elif pass1 != pass2:
+                return render_template("error.html", message="Your password does not match!")
+
+            elif len(pass1) < min_chars:
+                return render_template("error.html", message="Your password should be atleast {} characters long!".format(min_chars))
 
 
 
-    else:
-        return render_template("register.html")
+            else:
+                db.execute("INSERT INTO users (email,password) VALUES (:email,:password)",{"email":email_id,"password":pass1})
+                db.commit()
+
+                return redirect(url_for('login'))
+
+        if available_user is not None:
+            return render_template("error.html",message = "This account already exist!")
+
+
+    return render_template("register.html")
 
 
 @app.route("/login",methods=["GET","POST"])
@@ -67,7 +79,7 @@ def login():
         email_id = request.form.get("email_id")
         pass1 = request.form.get("pass1")
         checking = db.execute("SELECT * FROM users WHERE email = :email",{"email":email_id}).fetchone()
-        database_pass = db.execute("SELECT * FROM users WHERE password = :password",{"password":pass1}).fetchone()
+        database_pass = db.execute("SELECT * FROM users WHERE email=:email AND password = :password",{"email":email_id,"password":pass1}).fetchone()
 
 
         if checking is None:

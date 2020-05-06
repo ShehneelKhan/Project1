@@ -12,6 +12,12 @@
 
 
 
+ul p{
+    padding-left: 1em;
+    color: white;
+}
+
+
 h3 {
   padding-left: 1em;
   font-weight: bold;

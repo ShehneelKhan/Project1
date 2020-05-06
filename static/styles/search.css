@@ -7,6 +7,12 @@
 }
 
 
+ul p{
+    padding-left: 1em;
+    color: white;
+}
+
+
 
 #BookCheckerz {
 
@@ -58,4 +64,27 @@ h3 {
 
 #hh {
   padding-right: 40em;
+}
+
+
+h2 {
+
+    padding-left: 1em;
+    font-weight: bold;
+
+}
+
+
+
+.ff {
+  font-family: Verdana;
+}
+
+span {
+  font-weight: bold;
+}
+
+
+.bg {
+  background-color: #d4d0c5
 }

@@ -12,6 +12,16 @@ a{
 
 }
 
+
+
+ul p{
+    padding-left: 1em;
+    color: white;
+}
+
+
+
+
 #logout {
   margin-left: 800px;
 }
