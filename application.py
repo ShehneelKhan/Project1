@@ -2,7 +2,7 @@ import os
 import re
 from datetime import date
 import requests
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -26,6 +26,12 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/",methods=["GET","POST"])
 def index():
     return render_template("index.html")
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("error.html", message = "Page Not Found! (404)")
+
 
 @app.route("/register",methods=["GET","POST"])
 def register():
@@ -172,12 +178,30 @@ def book_details(isbn):
 
     return render_template("book_details.html", apidata = apidata, dbdata = dbdata , reviews = reviews, today = today)
 
+@app.route("/api/<string:isbn>")
+def api(isbn):
 
+    try:
+        dbdata = db.execute("SELECT * FROM books WHERE isbn=:isbn",{"isbn":isbn}).fetchone()
+        if dbdata is None:
+            return jsonify({"Error":"Invalid ISBN!"}),404
 
+        apiCall = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "TzAs9qZiNLUZ3xl1cpDzSg", "isbns": isbn})
+        apidata = apiCall.json()
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template("error.html", message = "Page Not Found!")
+        return jsonify({
+
+                "title":dbdata.title,
+                "author":dbdata.author,
+                "year":dbdata.year,
+                "isbn":dbdata.isbn,
+                "review_count":apidata['books'][0]['work_reviews_count'],
+                "average_score":apidata['books'][0]['average_rating'],
+                      })
+
+    except Exception as e:
+        return render_template("error.html", message = "Data is not available for this book")
+
 
 @app.route("/logout")
 def logout():
